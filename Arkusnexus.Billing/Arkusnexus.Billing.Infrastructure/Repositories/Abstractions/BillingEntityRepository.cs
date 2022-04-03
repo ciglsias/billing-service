@@ -45,9 +45,9 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
             return _dbSet.AsQueryable();
         }
 
-        public async Task<T> GetById(int id)
+        public async Task<T?> GetById(int id)
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbSet.FindAsync(id);
         }
 
         public async Task SaveChangesAsync()

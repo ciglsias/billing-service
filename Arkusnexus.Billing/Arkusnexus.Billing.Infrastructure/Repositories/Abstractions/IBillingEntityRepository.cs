@@ -15,7 +15,7 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
 
         Task<bool> DeleteById(int id);
 
-        Task<T> GetById(int id);
+        Task<T?> GetById(int id);
 
         IQueryable<T> GetAll();
 
