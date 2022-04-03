@@ -57,9 +57,24 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
             await _context.SaveChangesAsync();
         }
 
-        public T Update(T entity)
+        public async Task<T> Update(T entity)
         {
-            return _dbSet.Update(entity).Entity;
+            var entityFound = await _dbSet.FindAsync(entity.Id);
+
+            if (entityFound == null)
+            {
+                return null;
+            }
+            else
+            {
+                //todo: manage concurrency better
+
+                _dbSet.Remove(entityFound);
+
+                var added = _dbSet.Add(entity);
+
+                return added.Entity;
+            }
         }
     }
 }

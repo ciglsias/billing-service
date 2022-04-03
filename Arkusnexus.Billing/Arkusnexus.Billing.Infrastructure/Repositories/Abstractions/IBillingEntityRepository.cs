@@ -11,7 +11,7 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
     {
         T Add(T entity);
 
-        T Update(T entity);
+        Task<T> Update(T entity);
 
         Task<bool> DeleteById(int id);
 

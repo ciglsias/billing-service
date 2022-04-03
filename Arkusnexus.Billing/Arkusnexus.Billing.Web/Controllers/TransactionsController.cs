@@ -10,6 +10,7 @@ namespace Arkusnexus.Billing.Web.Controllers
     public class TransactionsController : ControllerBase
     {
         readonly IBillingUnitOfWork _unitOfWork;
+
         readonly IMapper _mapper;
 
         public TransactionsController(IBillingUnitOfWork unitOfWork, IMapper mapper)
@@ -60,7 +61,7 @@ namespace Arkusnexus.Billing.Web.Controllers
             await _unitOfWork.SaveChangesAsync();
 
             return CreatedAtAction(
-                nameof(Get),
+                nameof(Create),
                 new { id = added.Id }, 
                 _mapper.Map<DTOs.Read.TransactionDtoRead>(added));
         }
@@ -78,6 +79,34 @@ namespace Arkusnexus.Billing.Web.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(int id, DTOs.Write.TransactionDtoWrite transaction)
+        {
+                var found = await _unitOfWork
+                .TransactionRepository
+                .GetById(id);
+
+            if (found == null)
+            {
+                return NotFound();
+            }
+
+            var entity = _mapper.Map<Domain.Entities.Transaction>(transaction);
+
+            entity.Id = id;
+
+            var entityUpdated = await _unitOfWork
+                .TransactionRepository
+                .Update(entity);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return CreatedAtAction(
+                nameof(Update),
+                new { id = id },
+                _mapper.Map<DTOs.Read.TransactionDtoRead>(entityUpdated));
         }
     }
 }
