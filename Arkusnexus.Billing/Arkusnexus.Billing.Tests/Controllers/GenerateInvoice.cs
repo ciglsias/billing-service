@@ -22,7 +22,7 @@ namespace Arkusnexus.Billing.Tests.Controllers
         public async Task GenerateInvoice_ShouldMarkBilled()
         {
             //arrange
-            Mock<ITransactionRepository>? repositoryMock = new Mock<ITransactionRepository>();
+            Mock<ITransactionRepository>? transactionsRrepositoryMock = new Mock<ITransactionRepository>();
 
             List<Domain.Entities.Transaction>? transactions = new List<Domain.Entities.Transaction>()
             {
@@ -37,11 +37,17 @@ namespace Arkusnexus.Billing.Tests.Controllers
 
             IQueryable<Domain.Entities.Transaction>? dataQueryableMock = transactions.AsQueryable().BuildMock();
 
-            repositoryMock.Setup(x => x.GetAll()).Returns(dataQueryableMock);
+            transactionsRrepositoryMock.Setup(x => x.GetAll()).Returns(dataQueryableMock);
 
             Mock<IBillingUnitOfWork>? unitOfWorkMock = new Mock<IBillingUnitOfWork>();
 
-            unitOfWorkMock.SetupGet(x => x.TransactionRepository).Returns(repositoryMock.Object);
+            Mock<IInvoiceRepository>? invoicesRepositoryMock = new Mock<IInvoiceRepository>();
+
+            invoicesRepositoryMock.Setup(x => x.Add(It.IsAny<Domain.Entities.Invoice>())).Verifiable();
+
+            unitOfWorkMock.SetupGet(x => x.TransactionRepository).Returns(transactionsRrepositoryMock.Object);
+            
+            unitOfWorkMock.SetupGet(x => x.InvoiceRepository).Returns(invoicesRepositoryMock.Object);
 
             unitOfWorkMock.Setup(x => x.SaveChangesAsync()).Verifiable();
 
@@ -63,7 +69,7 @@ namespace Arkusnexus.Billing.Tests.Controllers
 
             Assert.True(transactions[4].BillingStatus == Domain.Entities.BillingStatus.Unbilled);
 
-            repositoryMock.Verify();
+            invoicesRepositoryMock.Verify();
 
             unitOfWorkMock.Verify();
         }
