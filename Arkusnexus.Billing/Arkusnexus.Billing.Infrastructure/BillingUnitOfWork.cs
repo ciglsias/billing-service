@@ -6,7 +6,7 @@ namespace Arkusnexus.Billing.Infrastructure
     public class BillingUnitOfWork : IBillingUnitOfWork
     {
         //context to reuse between Repositories
-        readonly BillingContext _context;
+        private readonly BillingContext _context;
 
         public BillingUnitOfWork()
         {

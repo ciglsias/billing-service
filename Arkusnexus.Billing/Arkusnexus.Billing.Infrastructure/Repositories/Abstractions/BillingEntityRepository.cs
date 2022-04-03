@@ -23,7 +23,7 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
 
         public async Task<bool> DeleteById(int id)
         {
-            var entity = await _dbSet.FindAsync(id);
+            T? entity = await _dbSet.FindAsync(id);
 
             if (entity != null)
             {
@@ -54,7 +54,7 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
 
         public async Task<T> Update(T entity)
         {
-            var entityFound = await _dbSet.FindAsync(entity.Id);
+            T? entityFound = await _dbSet.FindAsync(entity.Id);
 
             if (entityFound == null)
             {
@@ -66,7 +66,7 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
 
                 _dbSet.Remove(entityFound);
 
-                var added = _dbSet.Add(entity);
+                Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<T>? added = _dbSet.Add(entity);
 
                 return added.Entity;
             }

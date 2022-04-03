@@ -10,9 +10,8 @@ namespace Arkusnexus.Billing.Web.Controllers
     [Route("[controller]")]
     public class TransactionsAdvancedController : ControllerBase
     {
-        readonly IBillingUnitOfWork _unitOfWork;
-
-        readonly IMapper _mapper;
+        private readonly IBillingUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public TransactionsAdvancedController(IBillingUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -24,7 +23,7 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpPost("GenerateInvoice")]
         public async Task<IActionResult> GenerateInvoice(DateTime from, DateTime to)
         {
-            var transactions = await _unitOfWork
+            List<Transaction>? transactions = await _unitOfWork
                 .TransactionRepository
                 .GetAll()
                 .Where(t => t.DateTime >= from && t.DateTime <= to && t.BillingStatus == BillingStatus.Unbilled)
@@ -36,13 +35,13 @@ namespace Arkusnexus.Billing.Web.Controllers
                 return NotFound("Not Found Transactions");
             }
 
-            var newInvoice = new Invoice()
+            Invoice? newInvoice = new Invoice()
             {
                 Transactions = transactions,
                 DateTime = DateTime.Now,
             };
 
-            foreach (var transaction in transactions)
+            foreach (Transaction? transaction in transactions)
             {
                 transaction.BillingStatus = BillingStatus.Billed;
             }
@@ -59,7 +58,7 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpPut("SetInvoiceAsPaid")]
         public async Task<IActionResult> SetInvoiceAsPaid(int invoiceId)
         {
-            var invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
+            Invoice? invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
 
             if (invoice == null)
             {
@@ -68,7 +67,7 @@ namespace Arkusnexus.Billing.Web.Controllers
 
             invoice.Paid = true;
 
-            foreach (var transaction in invoice.Transactions)
+            foreach (Transaction? transaction in invoice.Transactions)
             {
                 transaction.BillingStatus = BillingStatus.Paid;
             }
@@ -102,7 +101,7 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpPut("ModifyIndividualTransactionBillingStatus")]
         public async Task<IActionResult> ModifyIndividualTransactionBillingStatus(int transactionId, BillingStatus billingStatus)
         {
-            var transaction = await _unitOfWork
+            Transaction? transaction = await _unitOfWork
                 .TransactionRepository
                 .GetById(transactionId)
                 ;

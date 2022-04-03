@@ -18,21 +18,13 @@ namespace Arkusnexus.Billing.Tests.Controllers
     {
         private readonly IMapper _mapper = new MapperConfiguration(cfg => cfg.AddProfile<BillingAutoMapperProfile>()).CreateMapper();
 
-        async IAsyncEnumerable<T> GetAsyncEnumerable<T>(List<T> list)
-        {
-            foreach (var item in list)
-            {
-                yield return item;
-            }
-        }
-
         [Fact]
         public async Task GenerateInvoice_ShouldMarkBilled()
         {
             //arrange
-            var repositoryMock = new Mock<ITransactionRepository>();
+            Mock<ITransactionRepository>? repositoryMock = new Mock<ITransactionRepository>();
 
-            var transactions = new List<Domain.Entities.Transaction>()
+            List<Domain.Entities.Transaction>? transactions = new List<Domain.Entities.Transaction>()
             {
                 FixtureUnbilledTransaction(),
                 FixtureUnbilledTransaction(),
@@ -43,25 +35,25 @@ namespace Arkusnexus.Billing.Tests.Controllers
 
             transactions.Sort(new Comparison<Domain.Entities.Transaction>((x, y) => Comparer<DateTime>.Default.Compare(x.DateTime, y.DateTime)));
 
-            var dataQueryableMock = transactions.AsQueryable().BuildMock();
+            IQueryable<Domain.Entities.Transaction>? dataQueryableMock = transactions.AsQueryable().BuildMock();
 
             repositoryMock.Setup(x => x.GetAll()).Returns(dataQueryableMock);
 
-            var unitOfWorkMock = new Mock<IBillingUnitOfWork>();
+            Mock<IBillingUnitOfWork>? unitOfWorkMock = new Mock<IBillingUnitOfWork>();
 
             unitOfWorkMock.SetupGet(x => x.TransactionRepository).Returns(repositoryMock.Object);
 
             unitOfWorkMock.Setup(x => x.SaveChangesAsync()).Verifiable();
 
-            var controller = new TransactionsAdvancedController(unitOfWorkMock.Object, _mapper);
+            TransactionsAdvancedController? controller = new TransactionsAdvancedController(unitOfWorkMock.Object, _mapper);
 
             //act
-            var invoiceResult = await controller.GenerateInvoice(transactions[1].DateTime, transactions[3].DateTime);
+            Microsoft.AspNetCore.Mvc.IActionResult? invoiceResult = await controller.GenerateInvoice(transactions[1].DateTime, transactions[3].DateTime);
 
             //asserts
-            var createdResult = Assert.IsType<Microsoft.AspNetCore.Mvc.CreatedAtActionResult>(invoiceResult);
+            Microsoft.AspNetCore.Mvc.CreatedAtActionResult? createdResult = Assert.IsType<Microsoft.AspNetCore.Mvc.CreatedAtActionResult>(invoiceResult);
 
-            var returnValue = Assert.IsType<Web.DTOs.Read.InvoiceDtoRead>(createdResult.Value);
+            Web.DTOs.Read.InvoiceDtoRead? returnValue = Assert.IsType<Web.DTOs.Read.InvoiceDtoRead>(createdResult.Value);
 
             Assert.Equal(3, returnValue.Transactions.Count);
 
@@ -78,9 +70,9 @@ namespace Arkusnexus.Billing.Tests.Controllers
 
         private Domain.Entities.Transaction FixtureUnbilledTransaction()
         {
-            var fixture = new Fixture();
+            Fixture? fixture = new Fixture();
 
-            var result = fixture.Create<Domain.Entities.Transaction>();
+            Domain.Entities.Transaction? result = fixture.Create<Domain.Entities.Transaction>();
 
             result.BillingStatus = Domain.Entities.BillingStatus.Unbilled;
 

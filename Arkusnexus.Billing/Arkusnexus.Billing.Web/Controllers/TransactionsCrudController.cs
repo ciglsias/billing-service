@@ -9,9 +9,8 @@ namespace Arkusnexus.Billing.Web.Controllers
     [Route("[controller]")]
     public class TransactionsCrudController : ControllerBase
     {
-        readonly IBillingUnitOfWork _unitOfWork;
-
-        readonly IMapper _mapper;
+        private readonly IBillingUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public TransactionsCrudController(IBillingUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -23,7 +22,7 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = (await _unitOfWork
+            IEnumerable<DTOs.Read.TransactionDtoRead>? result = (await _unitOfWork
                 .TransactionRepository
                 .GetAll()
                 .ToListAsync())
@@ -36,7 +35,7 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpGet("GetPage")]
         public async Task<IActionResult> GetPage(int start, int length)
         {
-            var result = (await _unitOfWork
+            IEnumerable<DTOs.Read.TransactionDtoRead>? result = (await _unitOfWork
                 .TransactionRepository
                 .GetAll()
                 .Skip(start - 1)
@@ -51,7 +50,7 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _unitOfWork
+            Domain.Entities.Transaction? result = await _unitOfWork
                 .TransactionRepository
                 .GetById(id);
 
@@ -60,7 +59,7 @@ namespace Arkusnexus.Billing.Web.Controllers
                 return NotFound();
             }
 
-            var dto = _mapper.Map<DTOs.Read.TransactionDtoRead>(result);
+            DTOs.Read.TransactionDtoRead? dto = _mapper.Map<DTOs.Read.TransactionDtoRead>(result);
 
             return Ok(dto);
         }
@@ -68,11 +67,11 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] DTOs.Write.TransactionDtoWrite transaction)
         {
-            var transactionEntity = _mapper.Map<Domain.Entities.Transaction>(transaction);
+            Domain.Entities.Transaction? transactionEntity = _mapper.Map<Domain.Entities.Transaction>(transaction);
 
             transactionEntity.DateTime = DateTime.Now;
 
-            var added = _unitOfWork
+            Domain.Entities.Transaction? added = _unitOfWork
                 .TransactionRepository
                 .Add(transactionEntity)
                 ;
@@ -88,7 +87,7 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _unitOfWork
+            bool result = await _unitOfWork
                 .TransactionRepository
                 .DeleteById(id);
 
@@ -103,7 +102,7 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(int id, DTOs.Write.TransactionDtoWrite transaction)
         {
-            var found = await _unitOfWork
+            Domain.Entities.Transaction? found = await _unitOfWork
             .TransactionRepository
             .GetById(id);
 
@@ -112,11 +111,11 @@ namespace Arkusnexus.Billing.Web.Controllers
                 return NotFound();
             }
 
-            var entity = _mapper.Map<Domain.Entities.Transaction>(transaction);
+            Domain.Entities.Transaction? entity = _mapper.Map<Domain.Entities.Transaction>(transaction);
 
             entity.Id = id;
 
-            var entityUpdated = await _unitOfWork
+            Domain.Entities.Transaction? entityUpdated = await _unitOfWork
                 .TransactionRepository
                 .Update(entity);
 
