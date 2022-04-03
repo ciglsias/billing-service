@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Arkusnexus.Billing.Domain\Arkusnexus.Billing.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

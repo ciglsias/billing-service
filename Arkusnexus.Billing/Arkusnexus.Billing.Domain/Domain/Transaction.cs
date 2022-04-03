@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arkusnexus.Billing.Domain.Domain.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Arkusnexus.Billing.Domain.Domain
 {
-    public class Transaction
+    public class Transaction : BillingEntity
     {
         public DateTime DateTime { get; set; }
 
