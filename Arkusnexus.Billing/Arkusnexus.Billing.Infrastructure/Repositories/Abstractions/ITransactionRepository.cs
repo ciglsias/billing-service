@@ -1,4 +1,4 @@
-﻿using Arkusnexus.Billing.Domain.Domain;
+﻿using Arkusnexus.Billing.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

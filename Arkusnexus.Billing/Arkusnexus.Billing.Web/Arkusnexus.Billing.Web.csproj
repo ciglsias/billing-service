@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Arkusnexus.Billing.Domain\Arkusnexus.Billing.Domain.csproj" />
+    <ProjectReference Include="..\Arkusnexus.Billing.Infrastructure\Arkusnexus.Billing.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

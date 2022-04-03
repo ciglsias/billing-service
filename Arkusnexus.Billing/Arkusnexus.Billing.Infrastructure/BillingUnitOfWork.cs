@@ -20,5 +20,10 @@ namespace Arkusnexus.Billing.Infrastructure
             TransactionRepository = new TransactionRepository(_context);
         }
         public ITransactionRepository TransactionRepository { get; }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arkusnexus.Billing.Domain.Domain
+namespace Arkusnexus.Billing.Domain.Entities.Abstractions
 {
-    public enum BillingStatus
+    public class BillingEntity
     {
-        Unbilled = 0,
-        Billed = 1,
-        Paid = 2,
+        public int Id { get; set; }
     }
 }

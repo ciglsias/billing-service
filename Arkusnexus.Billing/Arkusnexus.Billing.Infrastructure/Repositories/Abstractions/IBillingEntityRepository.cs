@@ -1,4 +1,4 @@
-﻿using Arkusnexus.Billing.Domain.Domain.Abstractions;
+﻿using Arkusnexus.Billing.Domain.Entities.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +13,12 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
 
         T Update(T entity);
 
-        bool DeleteById(int id);
+        Task<bool> DeleteById(int id);
 
-        T GetById(int id);
+        Task<T> GetById(int id);
 
         IQueryable<T> GetAll();
 
-        void SaveChanges();
+        Task SaveChangesAsync();
     }
 }

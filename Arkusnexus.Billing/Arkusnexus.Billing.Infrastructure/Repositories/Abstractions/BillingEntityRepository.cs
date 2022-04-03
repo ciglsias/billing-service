@@ -1,4 +1,4 @@
-﻿using Arkusnexus.Billing.Domain.Domain.Abstractions;
+﻿using Arkusnexus.Billing.Domain.Entities.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,9 +26,9 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
             return _dbSet.Add(entity).Entity;
         }
 
-        public bool DeleteById(int id)
+        public async Task<bool> DeleteById(int id)
         {
-            var entity = _dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
 
             if (entity != null)
             {
@@ -45,14 +45,14 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
             return _dbSet.AsQueryable();
         }
 
-        public T GetById(int id)
+        public async Task<T> GetById(int id)
         {
-            return _dbSet.FirstOrDefault(x => x.Id == id);
+            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public void SaveChanges()
+        public async Task SaveChangesAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public T Update(T entity)

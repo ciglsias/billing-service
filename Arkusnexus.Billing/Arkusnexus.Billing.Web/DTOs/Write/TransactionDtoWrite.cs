@@ -1,13 +1,13 @@
-﻿using Arkusnexus.Billing.Domain.Domain.Abstractions;
+﻿using Arkusnexus.Billing.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arkusnexus.Billing.Domain.Domain
+namespace Arkusnexus.Billing.Web.DTOs.Write
 {
-    public class Transaction : BillingEntity
+    public class TransactionDtoWrite
     {
         public DateTime DateTime { get; set; }
 

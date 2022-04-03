@@ -1,4 +1,4 @@
-﻿using Arkusnexus.Billing.Domain.Domain;
+﻿using Arkusnexus.Billing.Domain.Entities;
 using Arkusnexus.Billing.Infrastructure.Repositories.Abstractions;
 using System;
 using System.Collections.Generic;
