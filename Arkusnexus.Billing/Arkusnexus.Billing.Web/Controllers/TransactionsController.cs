@@ -50,7 +50,7 @@ namespace Arkusnexus.Billing.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] DTOs.Write.TransactionDtoWrite transaction)
+        public async Task<IActionResult> Create([FromBody] DTOs.Write.TransactionDtoWrite transaction)
         {
             var added = _unitOfWork
                 .TransactionRepository
@@ -63,6 +63,21 @@ namespace Arkusnexus.Billing.Web.Controllers
                 nameof(Get),
                 new { id = added.Id }, 
                 _mapper.Map<DTOs.Read.TransactionDtoRead>(added));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _unitOfWork
+                .TransactionRepository
+                .DeleteById(id);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

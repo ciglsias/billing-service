@@ -28,11 +28,13 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
 
         public async Task<bool> DeleteById(int id)
         {
-            var entity = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            var entity = await _dbSet.FindAsync(id);
 
             if (entity != null)
             {
                 _dbSet.Remove(entity);
+
+                await _context.SaveChangesAsync();
 
                 return true;
             }
