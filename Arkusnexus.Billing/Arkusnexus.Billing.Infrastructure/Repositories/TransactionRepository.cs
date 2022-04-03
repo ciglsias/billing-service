@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace Arkusnexus.Billing.Infrastructure.Repositories
 {
-    public class TransactionRepository : EntityRepository<Transaction>, ITransactionRepository
+    public class TransactionRepository : BillingEntityRepository<Transaction>, ITransactionRepository
     {
+        public TransactionRepository(BillingContext context) : base(context)
+        {
+            
+        }
     }
 }

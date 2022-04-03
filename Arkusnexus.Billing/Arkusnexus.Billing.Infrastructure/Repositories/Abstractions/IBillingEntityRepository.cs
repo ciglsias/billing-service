@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
 {
-    public interface IEntityRepository<T> where T : BillingEntity
+    public interface IBillingEntityRepository<T> where T : BillingEntity
     {
         T Add(T entity);
 
@@ -18,5 +18,7 @@ namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
         T GetById(int id);
 
         IQueryable<T> GetAll();
+
+        void SaveChanges();
     }
 }

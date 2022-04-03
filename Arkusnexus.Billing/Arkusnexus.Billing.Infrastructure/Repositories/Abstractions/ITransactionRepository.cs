@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Arkusnexus.Billing.Infrastructure.Repositories.Abstractions
 {
-    public interface ITransactionRepository : IEntityRepository<Transaction>
+    public interface ITransactionRepository : IBillingEntityRepository<Transaction>
     {
     }
 }
