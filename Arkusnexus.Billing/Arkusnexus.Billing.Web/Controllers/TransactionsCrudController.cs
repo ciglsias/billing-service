@@ -33,6 +33,21 @@ namespace Arkusnexus.Billing.Web.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetPage")]
+        public async Task<IActionResult> GetPage(int start, int length)
+        {
+            var result = (await _unitOfWork
+                .TransactionRepository
+                .GetAll()
+                .Skip(start - 1)
+                .Take(length)
+                .ToListAsync())
+                .Select(x => _mapper.Map<DTOs.Read.TransactionDtoRead>(x))
+                ;
+
+            return Ok(result);
+        }
+
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(int id)
         {
