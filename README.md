@@ -4,7 +4,7 @@ Service that record billable transactions to an InMemory Relational Database. Ea
 
 - .NET 6
 - to run the Project, no configuration needed. Just build/run.
-- Crud operations were created for manage Transactinos. Add, Delete, Update, List, GetById. Also basic pagination.
+- Crud operations were created to manage Transactinos. Add, Delete, Update, List, GetById. Also basic Pagination.
 - Operations were created to Modify an Individual Transaction Billing Status.
 - Operations were created to Create Invoices with a Range of Dates to select Transactions from such range. Only Transactions on this Range with Billing Status = NotBilled will be used.
 
