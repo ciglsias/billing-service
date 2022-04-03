@@ -45,7 +45,7 @@ namespace Arkusnexus.Billing.Web.Controllers
 
             return CreatedAtAction(
                 nameof(GenerateInvoice),
-                transactions.Select(t => _mapper.Map<DTOs.Read.TransactionDtoRead>(t)));
+                transactions.Select(t => _mapper.Map<DTOs.Read.TransactionDtoRead>(t)).ToList());
         }
 
         [HttpPut("SetTransactionAsPaid")]
