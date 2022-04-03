@@ -12,6 +12,8 @@ namespace Arkusnexus.Billing.Infrastructure
     {
         ITransactionRepository TransactionRepository { get; }
 
+        IInvoiceRepository InvoiceRepository { get; }
+
         Task SaveChangesAsync();
     }
 }

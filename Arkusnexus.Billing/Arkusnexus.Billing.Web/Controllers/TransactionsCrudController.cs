@@ -68,9 +68,13 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] DTOs.Write.TransactionDtoWrite transaction)
         {
+            var transactionEntity = _mapper.Map<Domain.Entities.Transaction>(transaction);
+
+            transactionEntity.DateTime = DateTime.Now;
+
             var added = _unitOfWork
                 .TransactionRepository
-                .Add(_mapper.Map<Domain.Entities.Transaction>(transaction))
+                .Add(transactionEntity)
                 ;
 
             await _unitOfWork.SaveChangesAsync();

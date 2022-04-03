@@ -9,8 +9,6 @@ namespace Arkusnexus.Billing.Web.DTOs.Write
 {
     public class TransactionDtoWrite
     {
-        public DateTime DateTime { get; set; }
-
         public double Ammout { get; set; }
 
         public string Description { get; set; } = "";

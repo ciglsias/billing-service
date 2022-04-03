@@ -17,5 +17,6 @@ namespace Arkusnexus.Billing.Infrastructure
         }
 
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
     }
 }

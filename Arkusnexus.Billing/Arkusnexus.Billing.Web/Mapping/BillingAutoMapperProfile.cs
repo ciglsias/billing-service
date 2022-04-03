@@ -8,6 +8,8 @@ namespace Arkusnexus.Billing.Web.Mapping
         {
             CreateMap<Domain.Entities.Transaction, DTOs.Read.TransactionDtoRead>();
             CreateMap<DTOs.Write.TransactionDtoWrite, Domain.Entities.Transaction>();
+
+            CreateMap<Domain.Entities.Invoice, DTOs.Read.InvoiceDtoRead>();
         }
     }
 }

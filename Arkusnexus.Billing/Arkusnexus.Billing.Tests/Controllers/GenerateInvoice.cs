@@ -63,11 +63,11 @@ namespace Arkusnexus.Billing.Tests.Controllers
             //asserts
             var createdResult = Assert.IsType<Microsoft.AspNetCore.Mvc.CreatedAtActionResult>(invoiceResult);
 
-            var returnValue = Assert.IsType<List<Web.DTOs.Read.TransactionDtoRead>>(createdResult.Value);
+            var returnValue = Assert.IsType<Web.DTOs.Read.InvoiceDtoRead>(createdResult.Value);
 
-            Assert.Equal(3, returnValue.Count);
+            Assert.Equal(3, returnValue.Transactions.Count);
 
-            Assert.True(returnValue.All(x => x.BillingStatus == Domain.Entities.BillingStatus.Billed));
+            Assert.True(returnValue.Transactions.All(x => x.BillingStatus == Domain.Entities.BillingStatus.Billed));
 
             Assert.True(transactions[0].BillingStatus == Domain.Entities.BillingStatus.Unbilled);
 

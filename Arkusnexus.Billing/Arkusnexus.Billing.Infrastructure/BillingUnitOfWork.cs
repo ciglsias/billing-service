@@ -18,8 +18,12 @@ namespace Arkusnexus.Billing.Infrastructure
             _context = new BillingContext();
 
             TransactionRepository = new TransactionRepository(_context);
+            
+            InvoiceRepository = new InvoiceRepository(_context);
         }
         public ITransactionRepository TransactionRepository { get; }
+
+        public IInvoiceRepository InvoiceRepository { get; }
 
         public async Task SaveChangesAsync()
         {
