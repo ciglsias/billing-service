@@ -2,14 +2,14 @@ using Arkusnexus.Billing.Infrastructure;
 using Arkusnexus.Billing.Infrastructure.Repositories;
 using Arkusnexus.Billing.Infrastructure.Repositories.Abstractions;
 using Arkusnexus.Billing.Web.Mapping;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddJsonOptions(opts => {
+builder.Services.AddControllers().AddJsonOptions(opts =>
+{
     var enumConverter = new JsonStringEnumConverter();
     opts.JsonSerializerOptions.Converters.Add(enumConverter);
 });

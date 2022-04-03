@@ -4,13 +4,11 @@ using Arkusnexus.Billing.Web.Controllers;
 using Arkusnexus.Billing.Web.Mapping;
 using AutoFixture;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using MockQueryable.Moq;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -34,7 +32,7 @@ namespace Arkusnexus.Billing.Tests.Controllers
             //arrange
             var repositoryMock = new Mock<ITransactionRepository>();
 
-            var transactions = new List<Domain.Entities.Transaction>() 
+            var transactions = new List<Domain.Entities.Transaction>()
             {
                 FixtureUnbilledTransaction(),
                 FixtureUnbilledTransaction(),

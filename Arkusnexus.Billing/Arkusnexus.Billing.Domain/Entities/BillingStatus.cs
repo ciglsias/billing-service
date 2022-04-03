@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Arkusnexus.Billing.Domain.Entities
+﻿namespace Arkusnexus.Billing.Domain.Entities
 {
     public enum BillingStatus
     {

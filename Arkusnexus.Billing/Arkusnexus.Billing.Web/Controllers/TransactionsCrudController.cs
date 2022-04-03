@@ -81,7 +81,7 @@ namespace Arkusnexus.Billing.Web.Controllers
 
             return CreatedAtAction(
                 nameof(Create),
-                new { id = added.Id }, 
+                new { id = added.Id },
                 _mapper.Map<DTOs.Read.TransactionDtoRead>(added));
         }
 
@@ -103,9 +103,9 @@ namespace Arkusnexus.Billing.Web.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(int id, DTOs.Write.TransactionDtoWrite transaction)
         {
-                var found = await _unitOfWork
-                .TransactionRepository
-                .GetById(id);
+            var found = await _unitOfWork
+            .TransactionRepository
+            .GetById(id);
 
             if (found == null)
             {

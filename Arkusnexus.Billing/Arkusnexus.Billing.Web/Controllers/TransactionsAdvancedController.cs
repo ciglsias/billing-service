@@ -68,7 +68,7 @@ namespace Arkusnexus.Billing.Web.Controllers
 
             invoice.Paid = true;
 
-            foreach(var transaction in invoice.Transactions)
+            foreach (var transaction in invoice.Transactions)
             {
                 transaction.BillingStatus = BillingStatus.Paid;
             }
