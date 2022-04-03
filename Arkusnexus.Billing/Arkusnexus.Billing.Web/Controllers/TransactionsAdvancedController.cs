@@ -21,6 +21,33 @@ namespace Arkusnexus.Billing.Web.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost("GenerateInvoice")]
+        public async Task<IActionResult> GenerateInvoice(DateTime from, DateTime to)
+        {
+            var transactions = await _unitOfWork
+                .TransactionRepository
+                .GetAll()
+                .Where(t => t.DateTime >= from && t.DateTime <= to && t.BillingStatus == BillingStatus.Unbilled)
+                .ToListAsync()
+                ;
+
+            if (transactions.Count == 0)
+            {
+                return NotFound();
+            }
+
+            foreach (var transaction in transactions)
+            {
+                transaction.BillingStatus = BillingStatus.Billed;
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return CreatedAtAction(
+                nameof(GenerateInvoice),
+                transactions.Select(t => _mapper.Map<DTOs.Read.TransactionDtoRead>(t)));
+        }
+
         [HttpPut("SetTransactionAsPaid")]
         public async Task<IActionResult> SetTransactionAsPaid(int transactionId)
         {
@@ -37,12 +64,6 @@ namespace Arkusnexus.Billing.Web.Controllers
         public async Task<IActionResult> SetTransactionAsUnbilled(int transactionId)
         {
             return await SetBillingStatus(transactionId, BillingStatus.Unbilled);
-        }
-
-        [HttpPost("GenerateInvoice")]
-        public async Task<IActionResult> GenerateInvoice(DateTime from, DateTime to)
-        {
-            return null;
         }
 
         [HttpPut("ModifyTransactionBillingStatus")]
