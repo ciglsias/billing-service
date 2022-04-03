@@ -1,8 +1,7 @@
-using Arkusnexus.Billing.Domain.Entities;
 using Arkusnexus.Billing.Infrastructure;
-using Arkusnexus.Billing.Web.DTOs.Read;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Arkusnexus.Billing.Web.Controllers
 {
@@ -21,12 +20,33 @@ namespace Arkusnexus.Billing.Web.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<DTOs.Read.TransactionDtoRead> Get()
+        public async Task<IActionResult> Get()
         {
-            return _unitOfWork
+            var result = (await _unitOfWork
                 .TransactionRepository
                 .GetAll()
-                .Select(x => _mapper.Map<DTOs.Read.TransactionDtoRead>(x));
+                .ToListAsync())
+                .Select(x => _mapper.Map<DTOs.Read.TransactionDtoRead>(x))
+                ;
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var result = await _unitOfWork
+                .TransactionRepository
+                .GetById(id);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _mapper.Map<DTOs.Read.TransactionDtoRead>(result);
+
+            return Ok(dto);
         }
 
         [HttpPost]
