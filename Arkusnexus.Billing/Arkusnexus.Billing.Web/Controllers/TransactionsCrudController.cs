@@ -7,13 +7,13 @@ namespace Arkusnexus.Billing.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TransactionsController : ControllerBase
+    public class TransactionsCrudController : ControllerBase
     {
         readonly IBillingUnitOfWork _unitOfWork;
 
         readonly IMapper _mapper;
 
-        public TransactionsController(IBillingUnitOfWork unitOfWork, IMapper mapper)
+        public TransactionsCrudController(IBillingUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
 
