@@ -21,7 +21,7 @@ namespace Arkusnexus.Billing.Tests.Controllers
         [Fact]
         public async Task GenerateInvoice_ShouldMarkBilled()
         {
-            //arrange
+            //arrange: mock transaction repository
             Mock<ITransactionRepository>? transactionsRrepositoryMock = new Mock<ITransactionRepository>();
 
             List<Domain.Entities.Transaction>? transactions = new List<Domain.Entities.Transaction>()
@@ -39,11 +39,13 @@ namespace Arkusnexus.Billing.Tests.Controllers
 
             transactionsRrepositoryMock.Setup(x => x.GetAll()).Returns(dataQueryableMock);
 
-            Mock<IBillingUnitOfWork>? unitOfWorkMock = new Mock<IBillingUnitOfWork>();
-
+            //arrange: mock invoices repository
             Mock<IInvoiceRepository>? invoicesRepositoryMock = new Mock<IInvoiceRepository>();
 
             invoicesRepositoryMock.Setup(x => x.Add(It.IsAny<Domain.Entities.Invoice>())).Verifiable();
+
+            //arrange: mock unit of work
+            Mock<IBillingUnitOfWork>? unitOfWorkMock = new Mock<IBillingUnitOfWork>();
 
             unitOfWorkMock.SetupGet(x => x.TransactionRepository).Returns(transactionsRrepositoryMock.Object);
             
@@ -51,6 +53,7 @@ namespace Arkusnexus.Billing.Tests.Controllers
 
             unitOfWorkMock.Setup(x => x.SaveChangesAsync()).Verifiable();
 
+            //arrange: controller created for act
             TransactionsAdvancedController? controller = new TransactionsAdvancedController(unitOfWorkMock.Object, _mapper);
 
             //act
